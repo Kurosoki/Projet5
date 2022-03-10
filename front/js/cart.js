@@ -24,6 +24,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     main();
 
+    //----------Parcourez chaque élément du stockage local et affichez les noms(index) ----------//
+    //--------------------------------------------------------//
+
     function getLocalStorageProduct() {
 
         let getLocalStorageArray = [];
@@ -49,6 +52,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             })
     }
 
+    //-------------------Rassembler dans la variable tous les élements de nos produits-------------------//
+    //---------------Ce qui vient du localstorage + APi-----------------------------------------//
     function ConcatArray(localStorageArray, ApiArray) {
 
         let AllProducts = [];
@@ -71,6 +76,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         return AllProducts;
     }
+
+    //-----Affiche les éléments d'un produit------------------//
+    //--------------------------------------------------------//
 
     function DisplayProduct(AllProducts) {
 
