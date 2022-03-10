@@ -138,21 +138,36 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // Fonction si on veux supprimer un éléments de la liste.
         ecoutedeleteProduct(AllProducts);
     }
-
-    function ecoutequantity(AllProducts) {
-
-
+    function ecoutequantity() {
+        // On stock notre <input>.
+        let qtyInput = document.querySelectorAll(".itemQuantity");
+        // ForEach sur notre Input.
+        qtyInput.forEach(function (input) {
+            // On écoute notre input.
+            input.addEventListener("input", function (inputevent) {
+                // On Stock notre nouvel valeur.
+                let inputQty = inputevent.target.value;
+            });
+        });
     }
 
     function ecoutedeleteProduct(AllProducts) {
 
-        let qtyinput = document.querySelectorAll(".itemQuantity");
+        let qtyinput = document.querySelectorAll(".deleteItem");
 
         qtyinput.forEach(function (input) {
-            input.addEventListener("change", function (inputevent) {
+            input.addEventListener("click", function (inputevent) {
                 console.log(inputevent)
+
+                const productName = input.closest("div.cart__item__content")
+
+
+                //productName = product.name + " " + colorChoosen,  
+
             })
         })
+
+
 
 
     }
