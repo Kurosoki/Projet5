@@ -138,15 +138,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // Fonction si on veux supprimer un éléments de la liste.
         ecoutedeleteProduct(AllProducts);
     }
-    function ecoutequantity() {
+    function ecoutequantity(AllProducts) {
         // On stock notre <input>.
         let qtyInput = document.querySelectorAll(".itemQuantity");
         // ForEach sur notre Input.
         qtyInput.forEach(function (input) {
             // On écoute notre input.
-            input.addEventListener("input", function (inputevent) {
+            input.addEventListener("change", function (inputevent) {
                 // On Stock notre nouvel valeur.
                 let inputQty = inputevent.target.value;
+
+
+                const Name = input
+                    .closest("div.cart__item__content")
+                    .querySelector("div.cart__item__content__description > h2").innerText;
+
+
+
+                const Color = input
+                    .closest("div.cart__item__content")
+                    .querySelector("div.cart__item__content__description > p").innerText;
+
+                let productName = Name + " " + color;
+                //modifié les valeurs qui sont dans le localstorage
+
+
+
+                DisplayTotalPrice(AllProducts);
+
             });
         });
     }
@@ -164,7 +183,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
                 //productName = product.name + " " + colorChoosen,  
 
+                DisplayTotalPrice(AllProducts);
+
             })
+
+
+
+            // Dans LocalStorage : suppression de l'article sélectionné //
+            function deleteItemLocalStorage(index) {
+
+            }
         })
 
 

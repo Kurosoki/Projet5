@@ -1,6 +1,7 @@
 
 document.addEventListener("DOMContentLoaded", function (event) {
 
+
     //-------------------fonction principale-------------------//
     //--------------------------------------------------------//
     async function main() {
@@ -18,10 +19,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //-----------------------------------------------------------------------------------------//
     async function GetProducts() {
         return fetch("http://localhost:3000/api/products")
-            .then(function (res) {
-                if (res.ok) {
-                    return res.json();
-                }
+            .then(function (response) {
+                return response.json();
             })
             .catch(function (error) {
                 console.log(error);
