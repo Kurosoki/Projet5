@@ -153,16 +153,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     .closest("div.cart__item__content")
                     .querySelector("div.cart__item__content__description > h2").innerText;
 
-
-
                 const Color = input
                     .closest("div.cart__item__content")
                     .querySelector("div.cart__item__content__description > p").innerText;
 
-                let productName = Name + " " + color;
-                //modifié les valeurs qui sont dans le localstorage
+                let productName = Name + " " + Color;
 
+                let localstorageKey = JSON.parse(localStorage.getItem(productName));
+                localstorageKey.qty = inputQty;
+                localStorage.setItem(productName, JSON.stringify(localstorageKey));
 
+                const result = AllProducts.find(x => x.name === localstorageKey.name && x.colors === localstorageKey.color);
+
+                result.qty = inputQty;
 
                 DisplayTotalPrice(AllProducts);
 
@@ -176,27 +179,43 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         qtyinput.forEach(function (input) {
             input.addEventListener("click", function (inputevent) {
-                console.log(inputevent)
 
-                const productName = input.closest("div.cart__item__content")
+                const Name = input
+                    .closest("div.cart__item__content")
+                    .querySelector("div.cart__item__content__description > h2").innerText;
 
+                const Color = input
+                    .closest("div.cart__item__content")
+                    .querySelector("div.cart__item__content__description > p").innerText;
 
-                //productName = product.name + " " + colorChoosen,  
+                productName = Name + " " + Color;
+
+                let localstorageKey = JSON.parse(localStorage.getItem(productName));
+
+                localStorage.removeItem(productName);
+
+                input.closest("div.cart__item__content").parentNode.remove();
+
+                const result = AllProducts.find(AllProduct => AllProduct.name === localstorageKey.name && AllProduct.colors === localstorageKey.color);
+
+                AllProducts = AllProducts.filter(product => product !== result);
+
+                ecoutequantity(AllProducts);
 
                 DisplayTotalPrice(AllProducts);
-
             })
-
-
-
-            // Dans LocalStorage : suppression de l'article sélectionné //
-            function deleteItemLocalStorage(index) {
-
-            }
         })
-
-
-
-
     }
+
+
+    //---------------------Validation formulaire REGEX------------------------//
+    //------------------------------------------------------------------//
+
+
+
+
+    //---------------------Fonction de validation------------------------//
+    //-------------------------------------------------------------------//
+
+
 });
