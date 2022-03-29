@@ -217,5 +217,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //---------------------Fonction de validation------------------------//
     //-------------------------------------------------------------------//
 
+    function validateEmail(emailAddress) {
+        let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(emailAddress);
+    }
 
+    if (validateEmail(emailAddress)) {
+        alert("Email  valide");
+    } else {
+        alert("Email invalide");
+    }
 });
