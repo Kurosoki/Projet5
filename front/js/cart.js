@@ -215,16 +215,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
     //---------------------Fonction de validation------------------------//
-    //-------------------------------------------------------------------//
 
-    function validateEmail(emailAddress) {
-        let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(emailAddress);
-    }
+    //Récupération de l'input dans le html
+    let prenom = document.getElementById("firstName");
+    let nom = document.getElementById("lastName");
+    let address = document.getElementById("address");
+    let ville = document.getElementById("city");
+    let myEmail = document.getElementById("email");
+    let btnCommander = document.getElementById("order");
 
-    if (validateEmail(emailAddress)) {
-        alert("Email  valide");
-    } else {
-        alert("Email invalide");
-    }
+    //Ecoute du changement de l'input email
+    myEmail.addEventListener('change', function () {
+        validateEmail(this)
+    });
+
+    //Création de la regex pour validation de l'email
+    const validateEmail = function (adressEmail) {
+
+        let emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
+        let testEmail = emailRegex.test(adressEmail.value);
+        console.log(adressEmail);
+
+        ///Récupération de la balise P
+        let message = adressEmail.nextElementSibling;
+
+        //Message de validation ou d'erreur lors de la saisie de l'email
+        if (testEmail) {
+            message.innerHTML = 'Email Valide';
+            //alert("Email valide");
+        } else {
+            message.innerHTML = 'Email Invalide';
+            // alert("Email invalide");
+        }
+        console.log(testEmail);
+    };
 });
