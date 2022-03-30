@@ -224,13 +224,32 @@ document.addEventListener("DOMContentLoaded", function (event) {
     let myEmail = document.getElementById("email");
     let btnCommander = document.getElementById("order");
 
+
+    // ***************** Validation Prénom *****************
+
+    //Ecoute du changement de l'input Prénom 
+    // prenom.addEventListener('change', function () {
+    //     validePrenom(this)
+    // });
+
+    // const validePrenom = function (prenom) {
+
+    // }
+
+
+
+
+
+
+    // ***************** Validation Email *****************
+
     //Ecoute du changement de l'input email
     myEmail.addEventListener('change', function () {
-        validateEmail(this)
+        valideEmail(this)
     });
 
     //Création de la regex pour validation de l'email
-    const validateEmail = function (adressEmail) {
+    const valideEmail = function (adressEmail) {
 
         let emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
         let testEmail = emailRegex.test(adressEmail.value);
@@ -242,11 +261,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
         //Message de validation ou d'erreur lors de la saisie de l'email
         if (testEmail) {
             message.innerHTML = 'Email Valide';
-            //alert("Email valide");
+            return true;
         } else {
             message.innerHTML = 'Email Invalide';
-            // alert("Email invalide");
-        }
-        console.log(testEmail);
+            return false;
+        }  //console.log(testEmail);
+
     };
+
+    // ***************** Soumission du Formulaire *****************
+
+    //Ecoute de la soumission du form
+    btnCommander.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (valideEmail(adressEmail)) {
+            console.log('email valideS');
+
+        }
+        else {
+            console.log('email non valideS');
+        }
+
+
+    });
 });
