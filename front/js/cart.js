@@ -20,6 +20,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         DisplayTotalPrice(AllProducts);
 
         Listen(AllProducts);
+
+        Validation();
     }
 
     main();
@@ -211,77 +213,154 @@ document.addEventListener("DOMContentLoaded", function (event) {
     //---------------------Validation formulaire REGEX------------------------//
     //------------------------------------------------------------------//
 
+    function ValidationRegex(form) {
 
+        // Initialisation de nos variables de test.
+        const stringRegex = /^[a-zA-Z-]+$/;
+        const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/;
+        const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
+
+        let control = true;
+
+        if (form.firstName.value.match(stringRegex)) {
+            document.getElementById("firstNameErrorMsg").innerText = " ";
+        } else {
+            document.getElementById("firstNameErrorMsg").innerText = "Prénom Invalide";
+            control = false;
+        }
+
+        if (form.lastName.value.match(stringRegex)) {
+            document.getElementById("lastNameErrorMsg").innerText = " ";
+        } else {
+            document.getElementById("lastNameErrorMsg").innerText = "Nom Invalide";
+            control = false;
+        }
+
+        if (form.address.value.match(addressRegex)) {
+            document.getElementById("addressErrorMsg").innerText = " ";
+        } else {
+            document.getElementById("addressErrorMsg").innerText = "Address Invalide";
+            control = false;
+        }
+
+        if (form.city.value.match(stringRegex)) {
+            document.getElementById("cityErrorMsg").innerText = " ";
+        } else {
+            document.getElementById("cityErrorMsg").innerText = "Ville Invalide";
+            control = false;
+        }
+
+        if (form.email.value.match(emailRegex)) {
+            document.getElementById("emailErrorMsg").innerText = " ";
+        } else {
+            document.getElementById("emailErrorMsg").innerText = "Email Invalide";
+            control = false;
+        }
+
+        if (control) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 
     //---------------------Fonction de validation------------------------//
+    function Validation() {
 
-    //Récupération de l'input dans le html
-    let prenom = document.getElementById("firstName");
-    let nom = document.getElementById("lastName");
-    let address = document.getElementById("address");
-    let ville = document.getElementById("city");
-    let myEmail = document.getElementById("email");
-    let btnCommander = document.getElementById("order");
+        let btnCommander = document.getElementById("order");
+
+        btnCommander.addEventListener('click', function (event) {
+
+            let form = document.querySelector(".cart__order__form");
+            event.preventDefault();
+
+            if (localStorage.length !== 0) {
+                console.log('Panier ok');
+                if (ValidationRegex(form)) {
+
+                    let formInfo = {
+                        firstName: form.firstName.value,
+                        lastName: form.lastName.value,
+                        address: form.address.value,
+                        city: form.city.value,
+                        email: form.email.value,
+                    };
+
+                    let product = [];
+
+                    for (let i = 0; i < localStorage.length; i++) {
+                        product[i] = JSON.parse(localStorage.getItem(localStorage.key(i))).id;
+                    }
+
+                    let order = {
+                        contact: formInfo,
+                        products: product,
+                    };
+
+                    // Appel Ajax
+                    // Méthode Appel Ajax en POST en incluant notre commande = order
+
+                    //Envoie de l'object order au serveur
+                    const promise = fetch("http://localhost:3000/api/products/order/", {
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify(order),
+                    });
+
+                    //Pour voir ce qu'il y a sur le serveur dans la console
+                    promise.then(async (response) => {
+                        try {
+                            const contenu = await response.json();
+                            console.log("contenu de response");
+                            console.log(contenu);
+
+                            if (response.ok) {
+                                console.log(`resultat response.ok: ${response.ok}`);
+
+                                //Récupération de l'id de la response du serveur
+                                console.log("id de response");
+                                console.log(contenu._id);
+
+                            } else {
+                                console.log(`réponse du serveur : erreur ${response.status}`)
+                            };
+                        }
+                        catch (e) {
+                            console.log("Erreur du catch");
+                            console.log(e);
+
+                        };
+                    })
+
+                    // const options = {
+                    //     ????
+                    //     ????
+                    //     ???
+                    // }
+
+                    fetch("http://localhost:3000/api/products/order/", options)
+                        .then((response) => response.json())
+                        .then(function (data) {
+                            // on redirige l'utilisateur sur la page confirmation en lui tresmettant en parametre la réponse de data 
+                        })
+                        .catch(function (error) {
+                            alert("Error fetch order" + error.message);
+                        })
+                } else {
+                    event.preventDefault();
+                    console.log("Le formulaire est mal remplis.");
+                }
+            } else {
+                event.preventDefault();
+                console.log("Votre panier est vide.");
+            }
 
 
-    // ***************** Validation Prénom *****************
 
-    //Ecoute du changement de l'input Prénom 
-    // prenom.addEventListener('change', function () {
-    //     validePrenom(this)
-    // });
+        });
+    }
 
-    // const validePrenom = function (prenom) {
-
-    // }
-
-
-
-
-
-
-    // ***************** Validation Email *****************
-
-    //Ecoute du changement de l'input email
-    myEmail.addEventListener('change', function () {
-        valideEmail(this)
-    });
-
-    //Création de la regex pour validation de l'email
-    const valideEmail = function (adressEmail) {
-
-        let emailRegex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/
-        let testEmail = emailRegex.test(adressEmail.value);
-        console.log(adressEmail);
-
-        ///Récupération de la balise P
-        let message = adressEmail.nextElementSibling;
-
-        //Message de validation ou d'erreur lors de la saisie de l'email
-        if (testEmail) {
-            message.innerHTML = 'Email Valide';
-            return true;
-        } else {
-            message.innerHTML = 'Email Invalide';
-            return false;
-        }  //console.log(testEmail);
-
-    };
-
-    // ***************** Soumission du Formulaire *****************
-
-    //Ecoute de la soumission du form
-    btnCommander.addEventListener('submit', function (e) {
-        e.preventDefault();
-        if (valideEmail(adressEmail)) {
-            console.log('email valideS');
-
-        }
-        else {
-            console.log('email non valideS');
-        }
-
-
-    });
 });
