@@ -298,53 +298,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         products: product,
                     };
 
-                    // Appel Ajax
-                    // Méthode Appel Ajax en POST en incluant notre commande = order
-
-                    //Envoie de l'object order au serveur
-                    const promise = fetch("http://localhost:3000/api/products/order/", {
-                        method: 'POST',
-                        headers: {
-                            'Content-type': 'application/json'
-                        },
+                    const options = {
+                        method: "POST",
                         body: JSON.stringify(order),
-                    });
-
-                    //Pour voir ce qu'il y a sur le serveur dans la console
-                    promise.then(async (response) => {
-                        try {
-                            const contenu = await response.json();
-                            console.log("contenu de response");
-                            console.log(contenu);
-
-                            if (response.ok) {
-                                console.log(`resultat response.ok: ${response.ok}`);
-
-                                //Récupération de l'id de la response du serveur
-                                console.log("id de response");
-                                console.log(contenu._id);
-
-                            } else {
-                                console.log(`réponse du serveur : erreur ${response.status}`)
-                            };
-                        }
-                        catch (e) {
-                            console.log("Erreur du catch");
-                            console.log(e);
-
-                        };
-                    })
-
-                    // const options = {
-                    //     ????
-                    //     ????
-                    //     ???
-                    // }
+                        headers: {
+                            Accept: "application/json",
+                            "Content-Type": "application/json",
+                        },
+                    };
 
                     fetch("http://localhost:3000/api/products/order/", options)
                         .then((response) => response.json())
                         .then(function (data) {
-                            // on redirige l'utilisateur sur la page confirmation en lui tresmettant en parametre la réponse de data 
+                            window.location.href = "confirmation.html?id=" + data.orderId;
                         })
                         .catch(function (error) {
                             alert("Error fetch order" + error.message);
