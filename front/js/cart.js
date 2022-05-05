@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         let localStorageArray = getLocalStorageProduct();
 
+        // on a tous nos produit du localstorage 
+        // on fait appel à notre fonction qui va chercher dans notre api 1 information
+        // cette info c'est id de notre produit qui se trouve dans localstoragearray 
         for (let i = 0; i < localStorageArray.length; i++) {
             ApiArray.push(await GetApi(localStorageArray[i]));
         }
@@ -216,7 +219,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function ValidationRegex(form) {
 
         // Initialisation de nos variables de test.
-        const stringRegex = /^[a-zA-Z-]+$/;
+        const stringRegex = /^[a-zA-Z-\s]+$/;
         const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+).(.\w{2,3})+$/;
         const addressRegex = /^[a-zA-Z0-9\s,.'-]{3,}$/;
 
